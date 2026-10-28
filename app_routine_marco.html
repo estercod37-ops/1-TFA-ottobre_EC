@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>La routine giornaliera di Marco</title>
+<style>
+:root{--blue:#235a91;--pale:#eaf3fb;--ink:#203044;--green:#26734d;--orange:#f1b84b}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:#f4f7fb;color:var(--ink);line-height:1.5}
+header{background:linear-gradient(135deg,#174777,#438bc3);color:white;padding:28px 18px}
+.wrap{max-width:1000px;margin:auto}
+h1{margin:0 0 8px;font-size:clamp(1.7rem,4vw,2.5rem)}
+header p{margin:0;max-width:700px}
+nav{display:flex;gap:8px;flex-wrap:wrap;padding:14px 0}
+nav a{background:white;color:var(--blue);border:1px solid #c9d8e8;border-radius:999px;padding:8px 13px;text-decoration:none;font-weight:650;font-size:.94rem}
+main{padding:0 16px 40px}
+section{background:white;border:1px solid #e0e7ef;border-radius:16px;padding:22px;margin:14px 0;box-shadow:0 4px 15px #2030440b}
+h2{color:var(--blue);margin-top:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.card{background:#f7faff;border:1px solid #dce8f4;border-radius:12px;padding:14px}
+.card strong{display:block;margin-bottom:5px;color:#174777}
+.pill{display:inline-block;background:var(--pale);color:var(--blue);border-radius:7px;padding:3px 8px;font-size:.85rem;font-weight:700}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.step{border:2px dashed #bfd1e2;border-radius:12px;padding:12px;background:#fbfdff;min-height:120px}
+.step .num{font-weight:800;color:var(--blue);font-size:1.1rem}
+.sequence{display:flex;gap:10px;flex-wrap:wrap}
+.item{flex:1 1 190px;border:1px solid #cbd8e6;border-radius:12px;padding:14px;background:#fff;cursor:grab}
+.item:focus{outline:3px solid #82b6e6}
+.item .emoji{font-size:2rem;display:block;margin-bottom:5px}
+.item select{width:100%;padding:8px;border-radius:8px;border:1px solid #b9c9da;margin-top:8px;background:white}
+button{border:0;border-radius:9px;padding:10px 15px;font:inherit;font-weight:700;cursor:pointer;background:var(--blue);color:white}
+button.secondary{background:#e7eef6;color:#174777}
+button:focus,a:focus{outline:3px solid var(--orange);outline-offset:2px}
+.feedback{font-weight:700;margin-top:12px;min-height:1.5em}
+.good{color:var(--green)}.bad{color:#a33a32}
+textarea{width:100%;min-height:80px;border:1px solid #bdcddd;border-radius:10px;padding:12px;font:inherit}
+footer{text-align:center;color:#5d6b7a;padding:18px}
+@media print{nav,button{display:none}body{background:white}section{box-shadow:none;break-inside:avoid}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <span class="pill">Attività didattica interattiva</span>
+  <h1>La routine giornaliera di Marco</h1>
+  <p>Impara a riordinare gli eventi di una giornata, riconoscendo che cosa succede prima, dopo e alla fine.</p>
+</div></header>
+<main class="wrap">
+<nav aria-label="Sezioni della pagina">
+<a href="#obiettivi">Obiettivi</a><a href="#strategia">Strategia</a><a href="#storia">La storia</a><a href="#attivita">Attività</a><a href="#riflessione">Riflessione</a>
+</nav>
+<section id="obiettivi">
+<h2>1. Obiettivi e prerequisiti</h2>
+<div class="grid">
+<div class="card"><strong>Obiettivo principale</strong>Riordinare cronologicamente le sequenze di una storia, individuando la corretta successione temporale degli eventi.</div>
+<div class="card"><strong>Prerequisiti</strong>Conoscere il lessico di base, comprendere semplici frasi sulle azioni quotidiane e riconoscere prima e dopo.</div>
+<div class="card"><strong>Altri obiettivi</strong>Comprendere il testo, individuare le informazioni principali, allenare l’attenzione, pianificare una soluzione e ampliare il lessico.</div>
+</div>
+</section>
+<section id="strategia">
+<h2>2. Una strategia per ordinare</h2>
+<p>Leggi tutte le frasi. Cerca gli indizi temporali e chiediti: <em>che cosa succede all’inizio? Che cosa viene dopo? Che cosa succede alla fine?</em></p>
+<div class="grid">
+<div class="card"><strong>PRIMA</strong>Il primo evento della giornata.</div>
+<div class="card"><strong>POI</strong>Un’azione che succede in seguito.</div>
+<div class="card"><strong>DOPO</strong>Un evento successivo a un altro.</div>
+<div class="card"><strong>ALLA FINE</strong>L’ultimo evento della sequenza.</div>
+</div>
+</section>
+<section id="storia">
+<h2>3. Leggi la storia</h2>
+<p>Questa è la giornata di Marco. Leggi con attenzione le sequenze, che nell’attività successiva saranno mescolate.</p>
+<div class="steps">
+<div class="step"><span class="emoji">⏰</span><strong>Marco si sveglia.</strong><p>La sveglia suona e Marco si alza dal letto.</p></div>
+<div class="step"><span class="emoji">🪥</span><strong>Marco si prepara.</strong><p>Si lava, si veste e si pettina.</p></div>
+<div class="step"><span class="emoji">🥣</span><strong>Marco fa colazione.</strong><p>Mangia e beve qualcosa prima di uscire.</p></div>
+<div class="step"><span class="emoji">🎒</span><strong>Marco va a scuola.</strong><p>Prende lo zaino e raggiunge la scuola.</p></div>
+<div class="step"><span class="emoji">🏠</span><strong>Marco torna a casa.</strong><p>Alla fine della giornata scolastica, torna a casa.</p></div>
+</div>
+<p><small>Le frasi sono brevi e il lessico è concreto. Puoi usare le immagini-emoji come supporto visivo.</small></p>
+</section>
+<section id="attivita">
+<h2>4. Attività: riordina le sequenze</h2>
+<p>Assegna a ogni carta un numero da 1 a 5. Se preferisci, puoi trascinare le carte per spostarle; il menu numerato è un’alternativa accessibile.</p>
+<div class="sequence" id="cards" aria-label="Sequenze da riordinare"></div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px">
+<button id="check">Controlla l’ordine</button><button class="secondary" id="hint">Dammi un indizio</button><button class="secondary" id="reset">Ricomincia</button>
+</div>
+<div class="feedback" id="feedback" aria-live="polite"></div>
+<div id="hintbox" class="card" hidden></div>
+</section>
+<section id="riflessione">
+<h2>5. Racconta la sequenza</h2>
+<p>Completa le frasi con le tue parole. Puoi usare gli indicatori temporali.</p>
+<label for="first"><strong>Prima, Marco…</strong></label><textarea id="first" placeholder="Scrivi qui…"></textarea>
+<label for="then"><strong>Poi, Marco…</strong></label><textarea id="then" placeholder="Scrivi qui…"></textarea>
+<label for="last"><strong>Alla fine, Marco…</strong></label><textarea id="last" placeholder="Scrivi qui…"></textarea>
+<p><button class="secondary" onclick="window.print()">Stampa l’attività</button></p>
+</section>
+<footer>Attività adattabile: iniziare con poche sequenze e immagini, poi aumentare gradualmente la difficoltà e ridurre gli aiuti.</footer>
+</main>
+<script>
+const data=[
+ {id:1,emoji:"⏰",title:"Marco si sveglia",desc:"La sveglia suona e Marco si alza dal letto."},
+ {id:2,emoji:"🪥",title:"Marco si prepara",desc:"Si lava, si veste e si pettina."},
+ {id:3,emoji:"🥣",title:"Marco fa colazione",desc:"Mangia e beve qualcosa prima di uscire."},
+ {id:4,emoji:"🎒",title:"Marco va a scuola",desc:"Prende lo zaino e raggiunge la scuola."},
+ {id:5,emoji:"🏠",title:"Marco torna a casa",desc:"Alla fine della giornata scolastica, torna a casa."}
+];
+const cards=document.getElementById("cards");
+function shuffle(arr){return [...arr].sort(()=>Math.random()-.5)}
+function render(){
+ cards.innerHTML="";
+ shuffle(data).forEach((d,i)=>{
+  const el=document.createElement("div");el.className="item";el.draggable=true;el.tabIndex=0;el.dataset.id=d.id;
+  el.innerHTML=`<span class="emoji">${d.emoji}</span><strong>${d.title}</strong><p>${d.desc}</p><label>Questa sequenza è la numero:
+  <select aria-label="Numero per ${d.title}"><option value="">Scegli…</option>${data.map((_,n)=>`<option value="${n+1}">${n+1}</option>`).join("")}</select></label>`;
+  el.addEventListener("dragstart",e=>{e.dataTransfer.setData("text/plain",d.id);el.style.opacity=".5"});
+  el.addEventListener("dragend",()=>el.style.opacity="1");
+  el.addEventListener("dragover",e=>e.preventDefault());
+  el.addEventListener("drop",e=>{e.preventDefault();const id=Number(e.dataTransfer.getData("text/plain"));const from=[...cards.children].find(x=>Number(x.dataset.id)===id);if(from&&from!==el){const nodes=[...cards.children];const a=nodes.indexOf(from),b=nodes.indexOf(el);if(a<b)el.after(from);else el.before(from);}});
+  cards.appendChild(el);
+ });
+ document.getElementById("feedback").textContent="";
+ document.getElementById("hintbox").hidden=true;
+}
+document.getElementById("check").addEventListener("click",()=>{
+ const els=[...cards.children];let nums=els.map(el=>el.querySelector("select").value);
+ if(nums.some(v=>!v)){feedback("Assegna un numero a tutte le sequenze.",false);return}
+ if(new Set(nums).size!==nums.length){feedback("Ogni sequenza deve avere un numero diverso. Riprova.",false);return}
+ let correct=0;els.forEach(el=>{if(Number(el.querySelector("select").value)===Number(el.dataset.id))correct++});
+ if(correct===data.length)feedback("Bravissimo! Hai ricostruito correttamente la giornata di Marco. 🎉",true);
+ else feedback(`Hai ordinato correttamente ${correct} sequenze su ${data.length}. Rileggi la storia e riprova.`,false);
+});
+function feedback(msg,ok){const f=document.getElementById("feedback");f.textContent=msg;f.className="feedback "+(ok?"good":"bad")}
+document.getElementById("hint").addEventListener("click",()=>{const h=document.getElementById("hintbox");h.hidden=false;h.textContent="Indizio: Marco si sveglia per primo. Tornare a casa succede dopo essere andato a scuola. Quale azione potrebbe avvenire tra il risveglio e la colazione?"});
+document.getElementById("reset").addEventListener("click",render);
+render();
+</script>
+</body>
+</html>
