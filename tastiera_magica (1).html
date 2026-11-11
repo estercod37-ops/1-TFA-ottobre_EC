@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>La mia tastiera magica</title>
+<style>
+:root{--ink:#28334a;--muted:#65718a;--blue:#6b8cff;--pink:#ff9fc5;--mint:#8edfc9;--cream:#fffaf2;--line:#e6eaf3}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(135deg,#f4f7ff,#fff4f8 55%,#f2fffa);font-family:ui-rounded,"Trebuchet MS",system-ui,sans-serif;color:var(--ink)}
+main{max-width:980px;margin:auto;padding:22px 16px 40px}
+header{text-align:center;padding:12px 8px 20px}
+.logo{font-size:42px;display:inline-block;background:white;border-radius:24px;padding:8px 18px;box-shadow:0 8px 24px #7185b51c}
+h1{font-size:clamp(28px,5vw,42px);margin:10px 0 4px;color:#4358a5}
+.sub{color:var(--muted);font-size:17px;margin:0}
+.panel{background:#ffffffed;border:2px solid white;border-radius:24px;padding:20px;margin:14px 0;box-shadow:0 10px 30px #6176a51a}
+h2{font-size:21px;margin:0 0 14px;color:#5267b3}
+.profile{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+label{display:block;font-weight:700;font-size:15px;margin-bottom:6px}
+input[type=text],textarea{width:100%;border:2px solid var(--line);border-radius:14px;padding:13px 14px;font:inherit;font-size:18px;color:var(--ink);background:#fbfcff;outline:none}
+input:focus,textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px #6b8cff22}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat{background:#f5f7ff;border-radius:18px;text-align:center;padding:12px 8px}
+.stat small{display:block;color:var(--muted);font-weight:700}
+.stat strong{display:block;font-size:29px;color:#5267b3;font-variant-numeric:tabular-nums}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+button{border:0;border-radius:15px;padding:13px 18px;font:inherit;font-weight:800;font-size:16px;cursor:pointer;transition:transform .12s,filter .12s}
+button:hover{filter:brightness(.98);transform:translateY(-1px)}
+button:focus-visible{outline:4px solid #28334a55;outline-offset:2px}
+.primary{background:#6b8cff;color:white}.secondary{background:#eaf0ff;color:#4358a5}.pink{background:#ffe3ef;color:#9c4770}.green{background:#dff8ef;color:#28765f}
+.prompt{font-size:clamp(24px,4vw,34px);font-weight:900;letter-spacing:1px;text-align:center;background:#fff4d9;border-radius:18px;padding:16px;margin:8px 0 14px;min-height:74px}
+.prompt span{color:#a3aabd}.prompt .next{color:#e45e9a;text-decoration:underline;text-underline-offset:5px}
+.helper{text-align:center;color:var(--muted);margin:0 0 12px}
+textarea{min-height:76px;resize:vertical;font-size:22px}
+.finger-card{display:flex;align-items:center;gap:14px;background:#f1fbf8;border-radius:18px;padding:12px 16px;margin:12px 0}
+.finger-icon{font-size:36px}.finger-card strong{font-size:19px;color:#28765f}.finger-card p{margin:3px 0 0;color:#526579}
+.keyboard{display:flex;flex-direction:column;gap:7px;max-width:760px;margin:16px auto 4px}
+.keyrow{display:flex;justify-content:center;gap:5px}
+.key{height:48px;min-width:0;flex:1;max-width:54px;padding:0 3px;background:#f3f5fb;border:2px solid #e3e8f2;border-radius:10px;box-shadow:0 3px 0 #dce2ee;color:#46516a;font-weight:800;font-size:17px}
+.key.wide{max-width:90px;flex:1.7}.key.space{max-width:340px;flex:5}
+.key.target{background:#ffe1ef;border-color:#ee79ad;box-shadow:0 3px 0 #e9a1c1;color:#8b315d;transform:translateY(-2px)}
+.key.left{border-bottom:4px solid #8eb4ff}.key.right{border-bottom:4px solid #f4a5c8}
+.legend{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;color:var(--muted);font-size:13px;margin-top:10px}
+.dot{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:5px;background:#8eb4ff}.dot.r{background:#f4a5c8}
+.note{font-size:14px;color:var(--muted);line-height:1.5}
+footer{text-align:center;color:#7b8498;font-size:13px;margin-top:18px}
+@media(max-width:600px){main{padding:12px 10px 28px}.panel{padding:15px;border-radius:19px}.profile{grid-template-columns:1fr}.stats{gap:6px}.stat strong{font-size:24px}.keyrow{gap:3px}.key{height:42px;font-size:13px;border-radius:8px;padding:0 1px}.key.wide{max-width:52px}.finger-card{align-items:flex-start}}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <div class="logo" aria-hidden="true">🌈 ⌨️ ⭐</div>
+  <h1>La mia tastiera magica</h1>
+  <p class="sub">Un piccolo passo alla volta. Ce la puoi fare! 💛</p>
+</header>
+
+<section class="panel" aria-labelledby="profilo">
+  <h2 id="profilo">👋 Chi sta giocando?</h2>
+  <div class="profile">
+    <div><label for="nome">Nome</label><input id="nome" type="text" autocomplete="given-name" placeholder="Scrivi il tuo nome"></div>
+    <div><label for="cognome">Cognome</label><input id="cognome" type="text" autocomplete="family-name" placeholder="Scrivi il tuo cognome"></div>
+  </div>
+</section>
+
+<section class="panel" aria-labelledby="allenamento">
+  <h2 id="allenamento">🚀 Pronti, partenza… digita!</h2>
+  <div class="stats">
+    <div class="stat"><small>⏱️ Tempo</small><strong id="timer">00:00</strong></div>
+    <div class="stat"><small>⭐ Parole corrette</small><strong id="correct">0</strong></div>
+    <div class="stat"><small>🎯 Precisione</small><strong id="accuracy">100%</strong></div>
+  </div>
+  <div class="controls">
+    <button class="primary" id="start">▶ Inizia</button>
+    <button class="secondary" id="pause" disabled>⏸ Pausa</button>
+    <button class="pink" id="reset">↻ Ricomincia</button>
+  </div>
+  <p class="helper" style="margin-top:18px">Guarda la parola e prova a scriverla qui sotto:</p>
+  <div class="prompt" id="prompt" aria-live="polite">SOLE</div>
+  <div class="finger-card" aria-live="polite">
+    <div class="finger-icon" id="fingerEmoji">☝️</div>
+    <div><strong id="fingerName">Indice della mano sinistra</strong><p id="fingerTip">Usa il dito indicato per premere il tasto evidenziato.</p></div>
+  </div>
+  <label for="typing">La tua scrittura</label>
+  <textarea id="typing" placeholder="Tocca qui e scrivi la parola…" autocomplete="off" autocapitalize="characters" spellcheck="false" disabled></textarea>
+  <div class="keyboard" id="keyboard" aria-label="Tastiera guida visiva"></div>
+  <div class="legend"><span><i class="dot"></i> Mano sinistra</span><span><i class="dot r"></i> Mano destra</span><span>Il tasto rosa è il prossimo da premere</span></div>
+  <p class="note">Suggerimento: procedi con calma. Puoi usare un dito alla volta e fare una pausa quando vuoi.</p>
+</section>
+
+<section class="panel">
+  <h2>📘 Il tuo report</h2>
+  <p class="note">Al termine, salva la sessione su questo dispositivo oppure scarica un report da condividere con chi ti accompagna.</p>
+  <div class="controls">
+    <button class="green" id="save">💾 Salva sessione</button>
+    <button class="primary" id="download">⬇ Scarica report</button>
+  </div>
+  <p class="note" id="saveStatus" role="status" aria-live="polite">Nessuna sessione salvata in questa pagina.</p>
+</section>
+<footer>🌟 Ogni tentativo è una conquista! 🌟</footer>
+</main>
+<script>
+(() => {
+const words = ["SOLE","LUNA","CASA","MELA","PANE","GATTO","CANE","PALLA","ROSA","MARE","FIORE","NONNO","MAMMA","PAPÀ","AMICO","STELLA"];
+const fingerInfo = {
+ Q:["Mignolo della mano sinistra","🤏"],W:["Anulare della mano sinistra","🖐️"],E:["Medio della mano sinistra","🖐️"],R:["Indice della mano sinistra","☝️"],T:["Indice della mano sinistra","☝️"],
+ Y:["Indice della mano destra","☝️"],U:["Indice della mano destra","☝️"],I:["Medio della mano destra","🖐️"],O:["Anulare della mano destra","🖐️"],P:["Mignolo della mano destra","🤏"],
+ A:["Mignolo della mano sinistra","🤏"],S:["Anulare della mano sinistra","🖐️"],D:["Medio della mano sinistra","🖐️"],F:["Indice della mano sinistra","☝️"],G:["Indice della mano sinistra","☝️"],
+ H:["Indice della mano destra","☝️"],J:["Indice della mano destra","☝️"],K:["Medio della mano destra","🖐️"],L:["Anulare della mano destra","🖐️"],
+ Z:["Mignolo della mano sinistra","🤏"],X:["Anulare della mano sinistra","🖐️"],C:["Medio della mano sinistra","🖐️"],V:["Indice della mano sinistra","☝️"],B:["Indice della mano sinistra","☝️"],
+ N:["Indice della mano destra","☝️"],M:["Indice della mano destra","☝️"]," ":["Pollice (mano che preferisci)","👍"]
+};
+const rows = ["QWERTYUIOP","ASDFGHJKL","ZXCVBNM"];
+const keyboard = document.getElementById("keyboard");
+const $ = id => document.getElementById(id);
+let wordIndex=0, startedAt=null, elapsed=0, ticker=null, correct=0, attempts=0, finished=false;
+function buildKeyboard(){
+ keyboard.innerHTML="";
+ rows.forEach((letters,ri)=>{
+  const row=document.createElement("div");row.className="keyrow";
+  if(ri===1){const spacer=document.createElement("span");spacer.style.flex=".45";row.append(spacer)}
+  [...letters].forEach(ch=>{const key=document.createElement("div");key.className="key "+("ASDFGHJKL".includes(ch)?"left":"");key.dataset.key=ch;key.textContent=ch;row.append(key)});
+  if(ri===1){const spacer=document.createElement("span");spacer.style.flex=".45";row.append(spacer)}
+  keyboard.append(row);
+ });
+ const row=document.createElement("div");row.className="keyrow";
+ const space=document.createElement("div");space.className="key space";space.dataset.key=" ";space.textContent="SPAZIO";row.append(space);keyboard.append(row);
+}
+function currentTarget(){const typed=$("typing").value.toUpperCase();return words[wordIndex][typed.length]||""}
+function updateGuide(){
+ const target=currentTarget();
+ document.querySelectorAll(".key").forEach(k=>k.classList.toggle("target",k.dataset.key===target));
+ if(target){
+  const [name,emoji]=fingerInfo[target]||["Dito indicato","☝️"];
+  $("fingerName").textContent=name;$("fingerEmoji").textContent=emoji;
+  $("fingerTip").textContent="Cerca il tasto "+target+" sulla tastiera e premilo delicatamente.";
+ } else {$("fingerName").textContent="Parola completata!";$("fingerEmoji").textContent="🌟";$("fingerTip").textContent="Bravissimo! Passiamo alla prossima parola."}
+ const w=words[wordIndex], n=$("typing").value.toUpperCase().length;
+ $("prompt").innerHTML=[...w].map((c,i)=>i<n?`<span>${c}</span>`:i===n?`<b class="next">${c}</b>`:`<span>${c}</span>`).join("");
+}
+function fmt(s){return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0")}
+function updateStats(){$("timer").textContent=fmt(elapsed);$("correct").textContent=correct;$("accuracy").textContent=(attempts?Math.round(correctChars/attempts*100):100)+"%"}
+let correctChars=0;
+function start(){if(finished)return;if(!ticker){startedAt=Date.now()-elapsed*1000;ticker=setInterval(()=>{elapsed=Math.floor((Date.now()-startedAt)/1000);updateStats()},250);$("typing").disabled=false;$("typing").focus();$("start").disabled=true;$("pause").disabled=false}}
+function pause(){if(ticker){clearInterval(ticker);ticker=null;elapsed=Math.floor((Date.now()-startedAt)/1000);updateStats();$("start").disabled=false;$("pause").disabled=true}}
+function nextWord(){wordIndex++;if(wordIndex>=words.length){finished=true;pause();$("prompt").textContent="HAI FINITO! 🎉";$("typing").disabled=true;$("fingerName").textContent="Allenamento completato";$("fingerTip").textContent="Ottimo lavoro! Puoi salvare o scaricare il report.";document.querySelectorAll(".key").forEach(k=>k.classList.remove("target"));return}$("typing").value="";updateGuide()}
+$("typing").addEventListener("input",()=>{
+ if(!ticker&&!finished)start();
+ const val=$("typing").value.toUpperCase(), target=words[wordIndex];
+ attempts+=Math.max(1,val.length-($("typing").dataset.lastLength||0));$("typing").dataset.lastLength=val.length;
+ const prefix=target.startsWith(val);
+ if(prefix){correctChars+=val.length; if(val===target){correct++;updateStats();setTimeout(nextWord,450)}}
+ else {$("typing").value=val.slice(0,-1);$("typing").dataset.lastLength=$("typing").value.length}
+ updateGuide();updateStats();
+});
+$("start").onclick=start;$("pause").onclick=pause;
+$("reset").onclick=()=>{pause();wordIndex=0;elapsed=0;correct=0;attempts=0;correctChars=0;finished=false;$("typing").value="";$("typing").dataset.lastLength=0;$("typing").disabled=true;$("start").disabled=false;$("pause").disabled=true;updateStats();updateGuide()};
+function report(){return {nome:$("nome").value.trim(),cognome:$("cognome").value.trim(),data:new Date().toLocaleString("it-IT"),durata:fmt(elapsed),paroleCorrette:correct,paroleTotali:words.length,precisione:(attempts?Math.round(correctChars/attempts*100):100)+"%",paroleAllenate:words.slice(0,wordIndex+(finished?0:1)).join(", ")}}
+$("save").onclick=()=>{const r=report();try{localStorage.setItem("tastieraMagicaUltimaSessione",JSON.stringify(r));$("saveStatus").textContent="Sessione salvata su questo dispositivo. 💚"}catch(e){$("saveStatus").textContent="Non è stato possibile salvare sul dispositivo. Puoi scaricare il report."}};
+$("download").onclick=()=>{const r=report();const lines=["REPORT - LA MIA TASTIERA MAGICA","Nome: "+r.nome,"Cognome: "+r.cognome,"Data: "+r.data,"Durata: "+r.durata,"Parole corrette: "+r.paroleCorrette+" / "+r.paroleTotali,"Precisione stimata: "+r.precisione,"Parole allenate: "+r.paroleAllenate,"","Nota: report di esercitazione, non è una valutazione clinica."].join("\n");const blob=new Blob(["\ufeff"+lines],{type:"text/plain;charset=utf-8"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="report-tastiera-magica.txt";a.click();URL.revokeObjectURL(url);$("saveStatus").textContent="Report pronto! 🌟"};
+buildKeyboard();updateStats();updateGuide();
+})();
+</script>
+</body>
+</html>
