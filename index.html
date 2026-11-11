@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>La mia tastiera – Allenamento</title>
+<style>
+:root{--ink:#26334a;--muted:#64748b;--bg:#f4f7ff;--card:#fff;--line:#e5eaf4;--accent:#6558d3;--good:#16845b;--bad:#d64e62}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#f3f6ff,#fff8f1);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink)}
+main{max-width:1050px;margin:auto;padding:24px 16px 48px}.hero{text-align:center;padding:14px 8px 22px}.hero .emoji{font-size:42px}.hero h1{margin:5px 0;font-size:clamp(1.7rem,4vw,2.5rem)}.hero p{color:var(--muted);margin:4px 0}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:20px;margin:14px 0;box-shadow:0 8px 26px #34466b0d}
+h2{font-size:1.15rem;margin:0 0 14px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field label{display:block;font-weight:650;font-size:.92rem;margin-bottom:6px}.field input{width:100%;padding:13px;border:2px solid var(--line);border-radius:12px;font:inherit;font-size:1rem}.field input:focus,textarea:focus{outline:3px solid #d9d5ff;border-color:var(--accent)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.stat{background:#f5f6ff;border-radius:15px;padding:12px;text-align:center}.stat b{display:block;font-size:1.45rem}.stat span{color:var(--muted);font-size:.82rem}
+.prompt{font-size:clamp(1.25rem,3vw,1.8rem);line-height:1.8;letter-spacing:.035em;background:#f8f9ff;padding:16px;border-radius:15px;min-height:88px;overflow-wrap:anywhere}.prompt .done{color:var(--good)}.prompt .next{background:#fff0b8;border-radius:5px;box-shadow:0 0 0 2px #f2ca57}.prompt .wrong{color:var(--bad);text-decoration:underline wavy}
+textarea{width:100%;min-height:100px;resize:vertical;padding:14px;border:2px solid var(--line);border-radius:14px;font:inherit;font-size:1.15rem;line-height:1.5;margin-top:12px}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}button{border:0;border-radius:13px;padding:12px 17px;font:inherit;font-weight:700;cursor:pointer;background:#eeeaff;color:#4539a5}button.primary{background:var(--accent);color:white}button.green{background:#e3f7ed;color:#146b4b}button:focus-visible{outline:3px solid #f0bd36;outline-offset:3px}button:disabled{opacity:.5;cursor:not-allowed}
+.guide{display:grid;grid-template-columns:1fr 1fr;gap:14px}.hand{border-radius:16px;background:#f8f9fc;padding:14px}.hand h3{margin:0 0 10px;text-align:center;font-size:.95rem}.fingers{display:flex;justify-content:center;align-items:end;gap:7px;min-height:115px}.finger{width:17%;max-width:58px;height:82px;border-radius:15px 15px 9px 9px;display:flex;align-items:end;justify-content:center;padding-bottom:8px;color:#26334a;font-size:.7rem;font-weight:800;border:2px solid #ffffffaa;transition:transform .15s,filter .15s}.finger:nth-child(1){height:58px}.finger:nth-child(2){height:80px}.finger:nth-child(3){height:91px}.finger:nth-child(4){height:83px}.finger:nth-child(5){height:62px}.finger.active{transform:translateY(-10px) scale(1.08);outline:4px solid var(--ink);filter:saturate(1.25)}
+.f-pinky{background:#f6a6b5}.f-ring{background:#ffc477}.f-middle{background:#f8e17a}.f-index{background:#8ed8bd}.f-thumb{background:#a9b9ff}
+.current{margin-top:12px;padding:13px;border-radius:13px;background:#f5f6ff;text-align:center;font-weight:700}.legend{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}.legend span{font-size:.8rem;color:var(--muted);display:flex;align-items:center;gap:5px}.dot{width:12px;height:12px;border-radius:50%;display:inline-block}
+.note{font-size:.9rem;color:var(--muted);line-height:1.5}.saved{margin-top:12px;color:var(--good);font-weight:650;min-height:1.3em}
+@media(max-width:650px){.fields,.guide{grid-template-columns:1fr}.stats{gap:7px}.stat{padding:10px 5px}.stat b{font-size:1.2rem}.panel{padding:15px}.finger{font-size:.62rem}}
+</style>
+</head>
+<body>
+<main>
+<header class="hero"><div class="emoji" aria-hidden="true">🌈⌨️</div><h1>La mia tastiera</h1><p>Un piccolo allenamento, un tasto alla volta!</p></header>
+
+<section class="panel" aria-labelledby="person-title">
+<h2 id="person-title">👋 Chi si allena?</h2>
+<div class="fields">
+ <div class="field"><label for="nome">Nome</label><input id="nome" autocomplete="given-name" placeholder="Scrivi il nome"></div>
+ <div class="field"><label for="cognome">Cognome</label><input id="cognome" autocomplete="family-name" placeholder="Scrivi il cognome"></div>
+</div>
+</section>
+
+<section class="panel">
+<h2>🎯 Copia la frase</h2>
+<div class="prompt" id="prompt" aria-label="Testo da copiare"></div>
+<textarea id="typing" aria-label="Area di digitazione" placeholder="Inizia a scrivere qui..." autocapitalize="off" spellcheck="false"></textarea>
+<div class="actions">
+<button class="primary" id="startBtn">▶ Inizia / riprendi</button>
+<button id="pauseBtn">Ⅱ Pausa</button>
+<button id="resetBtn">↻ Ricomincia</button>
+<button id="newBtn">✨ Nuova frase</button>
+</div>
+<p class="note">Suggerimento: guarda il colore del dito indicato e prova a usare proprio quel dito. Non c'è fretta!</p>
+</section>
+
+<section class="panel">
+<h2>⏱ Il tuo tempo</h2>
+<div class="stats">
+ <div class="stat"><b id="timer">00:00</b><span>Tempo</span></div>
+ <div class="stat"><b id="accuracy">100%</b><span>Precisione</span></div>
+ <div class="stat"><b id="progress">0%</b><span>Completato</span></div>
+</div>
+</section>
+
+<section class="panel">
+<h2>🖐️ Guida dei ditini</h2>
+<p class="note">Quando premi un tasto, il dito consigliato si illumina. Per la barra spaziatrice usa un pollice.</p>
+<div class="guide">
+ <div class="hand"><h3>Mano sinistra</h3><div class="fingers">
+  <div class="finger f-pinky" data-finger="LP">Mignolo</div><div class="finger f-ring" data-finger="LR">Anulare</div><div class="finger f-middle" data-finger="LM">Medio</div><div class="finger f-index" data-finger="LI">Indice</div><div class="finger f-thumb" data-finger="LT">Pollice</div>
+ </div></div>
+ <div class="hand"><h3>Mano destra</h3><div class="fingers">
+  <div class="finger f-thumb" data-finger="RT">Pollice</div><div class="finger f-index" data-finger="RI">Indice</div><div class="finger f-middle" data-finger="RM">Medio</div><div class="finger f-ring" data-finger="RR">Anulare</div><div class="finger f-pinky" data-finger="RP">Mignolo</div>
+ </div></div>
+</div>
+<div class="current" id="fingerMessage" aria-live="polite">Pronto? Premi un tasto per vedere quale dito usare 😊</div>
+<div class="legend">
+ <span><i class="dot f-pinky"></i>Mignolo</span><span><i class="dot f-ring"></i>Anulare</span><span><i class="dot f-middle"></i>Medio</span><span><i class="dot f-index"></i>Indice</span><span><i class="dot f-thumb"></i>Pollice</span>
+</div>
+</section>
+
+<section class="panel">
+<h2>💾 Il tuo report</h2>
+<p class="note">Salva il risultato su questo dispositivo oppure scarica un report da conservare.</p>
+<div class="actions">
+ <button class="green" id="saveBtn">✓ Salva risultato</button>
+ <button class="primary" id="downloadBtn">⬇ Scarica report</button>
+</div>
+<div class="saved" id="saveMessage" role="status"></div>
+<p class="note" id="history"></p>
+</section>
+<footer class="note" style="text-align:center;padding:10px">🌟 Ogni piccolo passo è un grande risultato!</footer>
+</main>
+<script>
+(() => {
+ const phrases = [
+  "SOLE CASA LUNA", "IL GATTO DORME", "MAMMA E PAPA", "LA MELA E ROSSA",
+  "CIAO AMICO", "IL SOLE SPLENDE", "LA PALLA ROTOLA", "OGGI SONO FELICE"
+ ];
+ const fingerMap = {};
+ const assign=(keys,f)=>keys.split("").forEach(k=>fingerMap[k]=f);
+ assign("qaz","LP"); assign("wsx","LR"); assign("edc","LM"); assign("rfvtgb","LI");
+ assign("yhnujm","RI"); assign("ik,","RM"); assign("ol.","RR"); assign("p;/'[ ]=-\\`","RP");
+ fingerMap[" "]="LT";
+ const fingerNames={LP:"mignolo sinistro",LR:"anulare sinistro",LM:"medio sinistro",LI:"indice sinistro",LT:"pollice",RI:"indice destro",RM:"medio destro",RR:"anulare destro",RP:"mignolo destro",RT:"pollice"};
+ const $=id=>document.getElementById(id);
+ let phrase=phrases[0], seconds=0, interval=null, started=false, records=[];
+ const input=$("typing");
+ function renderPrompt(){
+  const typed=input.value, html=[];
+  for(let i=0;i<phrase.length;i++){
+   let cls=i<typed.length?(typed[i]===phrase[i]?"done":"wrong"):(i===typed.length?"next":"");
+   html.push(`<span class="${cls}">${phrase[i]===" "?" ":escapeHtml(phrase[i])}</span>`);
+  }
+  $("prompt").innerHTML=html.join("");
+ }
+ function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+ function elapsed(){return String(Math.floor(seconds/60)).padStart(2,"0")+":"+String(seconds%60).padStart(2,"0");}
+ function updateStats(){
+  $("timer").textContent=elapsed();
+  const typed=input.value, count=Math.min(typed.length,phrase.length);
+  let correct=0;for(let i=0;i<count;i++)if(typed[i]===phrase[i])correct++;
+  $("accuracy").textContent=(typed.length?Math.round(correct/typed.length*100):100)+"%";
+  $("progress").textContent=Math.round(count/phrase.length*100)+"%";
+ }
+ function tick(){seconds++;updateStats();}
+ function start(){if(!interval){started=true;interval=setInterval(tick,1000);}}
+ function pause(){clearInterval(interval);interval=null;}
+ function reset(){pause();seconds=0;started=false;input.value="";renderPrompt();updateStats();clearFinger();$("saveMessage").textContent="";}
+ function clearFinger(){document.querySelectorAll(".finger").forEach(x=>x.classList.remove("active"));$("fingerMessage").textContent="Pronto? Premi un tasto per vedere quale dito usare 😊";}
+ function showFinger(key){
+  let f=fingerMap[key.toLowerCase()];
+  if(key===" ")f="LT";
+  if(!f){$("fingerMessage").textContent="Per questo tasto, scegli il dito più comodo.";return;}
+  document.querySelectorAll(".finger").forEach(x=>x.classList.toggle("active",x.dataset.finger===f));
+  $("fingerMessage").textContent="Usa il "+fingerNames[f]+" 👆";
+ }
+ input.addEventListener("input",()=>{if(input.value.length&&!started)start();renderPrompt();updateStats();if(input.value.length>=phrase.length)pause();});
+ input.addEventListener("keydown",e=>{if(e.key.length===1)showFinger(e.key);});
+ $("startBtn").onclick=start;$("pauseBtn").onclick=pause;$("resetBtn").onclick=reset;
+ $("newBtn").onclick=()=>{phrase=phrases[(phrases.indexOf(phrase)+1)%phrases.length];reset();};
+ function getReport(){
+  const typed=input.value;let correct=0;for(let i=0;i<Math.min(typed.length,phrase.length);i++)if(typed[i]===phrase[i])correct++;
+  return {nome:$("nome").value.trim(),cognome:$("cognome").value.trim(),data:new Date().toLocaleString("it-IT"),frase:phrase,testoDigitato:typed,tempo:elapsed(),secondi:seconds,caratteriDigitati:typed.length,caratteriCorretti:correct,precisione:(typed.length?Math.round(correct/typed.length*100):100)+"%",completamento:Math.round(Math.min(typed.length,phrase.length)/phrase.length*100)+"%"};
+ }
+ $("saveBtn").onclick=()=>{
+  const r=getReport();records=JSON.parse(localStorage.getItem("tastieraReports")||"[]");records.push(r);localStorage.setItem("tastieraReports",JSON.stringify(records));
+  $("saveMessage").textContent="Risultato salvato su questo dispositivo. Bravissimo! ⭐";showHistory();
+ };
+ $("downloadBtn").onclick=()=>{
+  const r=getReport();const lines=["REPORT ALLENAMENTO TASTIERA","Nome: "+r.nome,"Cognome: "+r.cognome,"Data: "+r.data,"Frase: "+r.frase,"Testo digitato: "+r.testoDigitato,"Tempo: "+r.tempo,"Precisione: "+r.precisione,"Completamento: "+r.completamento,"Caratteri corretti: "+r.caratteriCorretti+"/"+r.caratteriDigitati];
+  const blob=new Blob(["\uFEFF"+lines.join("\r\n")],{type:"text/plain;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");
+  a.href=url;a.download="report-allenamento-tastiera.txt";a.click();URL.revokeObjectURL(url);
+ };
+ function showHistory(){let list=JSON.parse(localStorage.getItem("tastieraReports")||"[]");$("history").textContent=list.length?`Risultati salvati su questo dispositivo: ${list.length}.`:"Nessun risultato salvato in precedenza.";}
+ renderPrompt();updateStats();showHistory();
+})();
+</script>
+</body>
+</html>
