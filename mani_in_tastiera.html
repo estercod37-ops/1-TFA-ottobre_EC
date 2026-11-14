@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mani in Tastiera — Imparo a digitare</title>
+<style>
+:root{--ink:#203047;--muted:#66758a;--bg:#f4f7ff;--card:#fff;--blue:#5278e8;--pink:#f28ab5;--yellow:#ffd76a;--green:#4ebc91;--line:#e4eaf5}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#f5f7ff,#fff7fb);font-family:ui-rounded,"Trebuchet MS",system-ui,sans-serif;color:var(--ink)}
+.wrap{max-width:1120px;margin:auto;padding:22px}.top{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px}.logo{width:54px;height:54px;border-radius:18px;background:#e9efff;display:grid;place-items:center;font-size:29px}
+h1{font-size:clamp(25px,4vw,36px);margin:0}.sub{color:var(--muted);margin:4px 0 0}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:20px;box-shadow:0 8px 25px #304b7810;margin-top:18px}
+.profile{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field label{display:block;font-weight:800;margin:0 0 6px}.field input{width:100%;padding:13px 14px;border:2px solid var(--line);border-radius:13px;font:inherit;font-size:17px;outline:none}.field input:focus,.typing:focus{border-color:var(--blue)}
+.section-title{font-size:20px;font-weight:900;margin:0 0 5px}.hint{color:var(--muted);margin:0 0 14px}
+.hands{display:grid;grid-template-columns:1fr 1fr;gap:14px}.hand-card{border-radius:20px;padding:14px;background:#f6f8ff;text-align:center}.hand-card.right{background:#fff6fa}.hand-name{font-size:18px;font-weight:900;margin-bottom:4px}.hand-svg{width:100%;height:190px;max-width:390px;display:block;margin:auto}
+.palm{fill:#dce6ff;stroke:#8296c9;stroke-width:3}.right .palm{fill:#ffe1ed;stroke:#ce8ba6}
+.finger{fill:#dce6ff;stroke:#8296c9;stroke-width:3;transition:.15s}.right .finger{fill:#ffe1ed;stroke:#ce8ba6}
+.finger.active{fill:#ffcc43!important;stroke:#d38b00!important;stroke-width:5;filter:drop-shadow(0 0 7px #ffc83d)}
+.finger-labels{display:flex;justify-content:space-around;gap:3px;font-size:12px;font-weight:800;color:var(--muted)}.finger-labels span{flex:1}
+.legend{display:flex;justify-content:center;gap:8px;align-items:center;margin-top:10px;color:var(--muted);font-size:13px}.dot{width:13px;height:13px;border-radius:50%;background:#ffcc43;display:inline-block}
+.practice-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:16px}.target{font-size:clamp(34px,6vw,54px);font-weight:1000;letter-spacing:5px;color:var(--blue);margin:7px 0 14px;overflow-wrap:anywhere}.target .done{color:var(--green)}.target .next{background:#fff0b9;border-radius:9px;padding:0 5px;color:#6a4a00}
+.instruction{background:#fff8df;border:2px solid #ffe7a0;border-radius:18px;padding:14px;min-height:100px}.instruction strong{font-size:22px;display:block;margin-bottom:4px}.key-bubble{display:inline-grid;place-items:center;min-width:43px;height:43px;padding:0 9px;background:#203047;color:white;border-radius:11px;font-size:23px;font-weight:900;margin-right:8px}
+.typing{width:100%;padding:15px;border:2px solid var(--line);border-radius:14px;font:inherit;font-size:20px;margin-top:12px;outline:none}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
+button{border:0;border-radius:13px;padding:12px 17px;font:inherit;font-weight:900;cursor:pointer;background:#eaf0ff;color:#3156bd}button.primary{background:var(--blue);color:white}button.green{background:#e2f7ed;color:#16784f}button.soft{background:#fff0f5;color:#a13c69}button:active{transform:scale(.98)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.stat{background:#f7f9ff;border-radius:15px;padding:12px;text-align:center}.stat b{font-size:25px;display:block}.stat span{font-size:13px;color:var(--muted);font-weight:700}
+.words{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.words button{padding:9px 12px}
+.note{font-size:13px;color:var(--muted);line-height:1.5;margin-top:12px}
+@media(max-width:700px){.wrap{padding:13px}.hands{gap:8px}.hand-card{padding:8px 4px}.hand-svg{height:145px}.finger-labels{font-size:10px}.practice-grid{grid-template-columns:1fr}.profile{grid-template-columns:1fr 1fr}.panel{padding:15px}}
+@media(max-width:390px){.finger-labels{font-size:9px}.hand-svg{height:125px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+ <div class="brand"><div class="logo">⌨️</div><div><h1>Mani in Tastiera</h1><p class="sub">Guarda il dito, trova il tasto e prova con calma!</p></div></div>
+ <div class="stats"><div class="stat"><b id="timer">00:00</b><span>TEMPO</span></div><div class="stat"><b id="progress">0/0</b><span>LETTERE</span></div><div class="stat"><b id="accuracy">0%</b><span>PRECISIONE</span></div></div>
+</header>
+
+<section class="panel">
+ <div class="section-title">👋 Chi sta giocando?</div>
+ <div class="profile" style="margin-top:12px">
+  <div class="field"><label for="firstName">Nome</label><input id="firstName" placeholder="Scrivi il nome"></div>
+  <div class="field"><label for="lastName">Cognome</label><input id="lastName" placeholder="Scrivi il cognome"></div>
+ </div>
+</section>
+
+<section class="panel">
+ <div class="section-title">✋ Le mani e le dita</div>
+ <p class="hint">Il dito da usare si illumina in giallo. Guarda bene quale mano e quale dito!</p>
+ <div class="hands">
+  <div class="hand-card" id="leftCard"><div class="hand-name">🤚 MANO SINISTRA</div>
+   <svg class="hand-svg" viewBox="0 0 360 205" role="img" aria-label="Disegno della mano sinistra con cinque dita">
+    <rect class="finger" data-finger="lp" x="38" y="42" width="43" height="104" rx="21"/>
+    <rect class="finger" data-finger="lr" x="91" y="18" width="43" height="128" rx="21"/>
+    <rect class="finger" data-finger="lm" x="144" y="5" width="43" height="141" rx="21"/>
+    <rect class="finger" data-finger="li" x="197" y="31" width="43" height="115" rx="21"/>
+    <path class="finger" data-finger="lt" d="M235 116 Q260 90 281 111 L321 145 Q337 160 323 176 Q310 190 294 177 L247 151Z"/>
+    <path class="palm" d="M48 126 Q48 108 66 108 L225 108 Q247 108 252 129 L260 170 Q263 193 239 197 L74 197 Q48 194 48 171Z"/>
+   </svg>
+   <div class="finger-labels"><span>Mignolo</span><span>Anulare</span><span>Medio</span><span>Indice</span><span>Pollice</span></div>
+  </div>
+  <div class="hand-card right" id="rightCard"><div class="hand-name">🤚 MANO DESTRA</div>
+   <svg class="hand-svg" viewBox="0 0 360 205" role="img" aria-label="Disegno della mano destra con cinque dita">
+    <rect class="finger" data-finger="ri" x="120" y="31" width="43" height="115" rx="21"/>
+    <rect class="finger" data-finger="rm" x="173" y="5" width="43" height="141" rx="21"/>
+    <rect class="finger" data-finger="rr" x="226" y="18" width="43" height="128" rx="21"/>
+    <rect class="finger" data-finger="rp" x="279" y="42" width="43" height="104" rx="21"/>
+    <path class="finger" data-finger="rt" d="M125 116 Q100 90 79 111 L39 145 Q23 160 37 176 Q50 190 66 177 L113 151Z"/>
+    <path class="palm" d="M108 126 Q108 108 126 108 L285 108 Q303 108 303 126 L303 171 Q303 195 278 197 L121 197 Q97 193 100 170Z"/>
+   </svg>
+   <div class="finger-labels"><span>Pollice</span><span>Indice</span><span>Medio</span><span>Anulare</span><span>Mignolo</span></div>
+  </div>
+ </div>
+ <div class="legend"><span class="dot"></span> Questo è il dito da usare adesso</div>
+</section>
+
+<section class="panel">
+ <div class="section-title">⭐ Tocca a te!</div>
+ <p class="hint">Segui una lettera alla volta. Il prossimo tasto è grande e ben visibile.</p>
+ <div class="practice-grid">
+  <div>
+   <div class="target" id="targetWord" aria-live="polite"></div>
+   <div class="instruction" aria-live="polite"><div><span class="key-bubble" id="nextKey">A</span><strong id="fingerText">Indice sinistro</strong></div><span id="tip">Usa il dito illuminato per premere il tasto.</span></div>
+   <input class="typing" id="typing" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Digita qui la parola…" aria-label="Area per digitare la parola">
+   <div class="actions"><button class="primary" id="startBtn">▶ Inizia</button><button id="resetBtn">↻ Ricomincia</button><button class="green" id="nextBtn">Parola successiva →</button></div>
+   <div class="words" id="wordChoices"></div>
+  </div>
+  <div>
+   <div class="section-title">🧭 La nostra missione</div>
+   <p style="line-height:1.6;margin-top:8px">1. Guarda la lettera grande.<br>2. Guarda la mano illuminata.<br>3. Usa proprio quel dito.<br>4. Scrivi la parola fino alla fine.</p>
+   <div class="stat" style="margin-top:12px"><b id="wordCount">0</b><span>PAROLE COMPLETATE</span></div>
+   <p class="note">Per la barra spaziatrice usa un pollice. Non serve correre: ogni piccolo passo è una vittoria! 🌟</p>
+  </div>
+ </div>
+</section>
+
+<section class="panel">
+ <div class="section-title">💾 Salva il risultato</div>
+ <p class="hint">Puoi salvare la sessione su questo dispositivo e scaricare un report.</p>
+ <div class="actions"><button class="green" id="saveBtn">✓ Salva sessione</button><button class="primary" id="reportBtn">⬇ Scarica report</button></div>
+ <p id="saveStatus" class="note" aria-live="polite">La sessione non è ancora stata salvata.</p>
+</section>
+</div>
+<script>
+const map={q:'lp',a:'lp',z:'lp',w:'lr',s:'lr',x:'lr',e:'lm',d:'lm',c:'lm',r:'li',f:'li',v:'li',t:'li',g:'li',b:'li',y:'ri',h:'ri',n:'ri',u:'ri',j:'ri',m:'ri',i:'rm',k:'rm',',':'rm',o:'rr',l:'rr','.':'rr',p:'rp',' ':'thumb'};
+const fingerNames={lp:'Mignolo sinistro',lr:'Anulare sinistro',lm:'Medio sinistro',li:'Indice sinistro',lt:'Pollice sinistro',ri:'Indice destro',rm:'Medio destro',rr:'Anulare destro',rp:'Mignolo destro',rt:'Pollice destro',thumb:'Un pollice'};
+const tips={lp:'Il mignolo della mano sinistra.',lr:'L’anulare della mano sinistra.',lm:'Il dito medio della mano sinistra.',li:'L’indice della mano sinistra.',ri:'L’indice della mano destra.',rm:'Il dito medio della mano destra.',rr:'L’anulare della mano destra.',rp:'Il mignolo della mano destra.',thumb:'Premi la barra spaziatrice con un pollice.'};
+const words=['SOLE','CASA','MELA','LUNA','PANE','GATTO','FIORE','AMICO','SCUOLA','PALLA'];
+let wordIndex=0,step=0,started=false,startAt=0,elapsed=0,tick=null,errors=0,attempts=0,completed=0,history=[];
+const $=id=>document.getElementById(id);
+function current(){return words[wordIndex]}
+function fingerFor(ch){return map[ch.toLowerCase()]||'ri'}
+function highlight(id){document.querySelectorAll('.finger').forEach(el=>el.classList.toggle('active',el.dataset.finger===id || (id==='thumb'&&(el.dataset.finger==='lt'||el.dataset.finger==='rt'))));}
+function render(){
+ const w=current();$('targetWord').innerHTML=[...w].map((c,i)=>`<span class="${i<step?'done':i===step?'next':''}">${c}</span>`).join('');
+ $('progress').textContent=step+'/'+w.length;
+ const ch=w[step];
+ if(ch){const f=fingerFor(ch);highlight(f);$('nextKey').textContent=ch;$('fingerText').textContent=fingerNames[f]||'Guarda il dito illuminato';$('tip').textContent=tips[f]||'Premi il tasto indicato.';}
+ else{highlight('');$('nextKey').textContent='✓';$('fingerText').textContent='Bravissimo!';$('tip').textContent='Hai completato la parola. Scegline un’altra!';}
+ $('wordCount').textContent=completed;
+}
+function updateTimer(){let s=elapsed+(started?Math.floor((Date.now()-startAt)/1000):0);$('timer').textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
+function start(){if(!started){started=true;startAt=Date.now();tick=setInterval(updateTimer,500);$('startBtn').textContent='⏸ In pausa';}else{elapsed+=Math.floor((Date.now()-startAt)/1000);started=false;clearInterval(tick);$('startBtn').textContent='▶ Riprendi';updateTimer();}}
+function reset(){step=0;errors=0;attempts=0;render();$('typing').value='';$('typing').focus();}
+function nextWord(){if(step===current().length)completed++;history.push({word:current(),correct:step,errors});wordIndex=(wordIndex+1)%words.length;reset();}
+$('typing').addEventListener('keydown',e=>{
+ if(e.key==='Backspace'){if(step>0){step--;render();}return;}
+ if(e.key.length!==1)return;
+ if(!started)start();
+ const expected=current()[step];if(!expected)return;
+ attempts++;if(e.key.toUpperCase()===expected){step++;$('typing').value=current().slice(0,step);if(step===current().length){completed++;$('wordCount').textContent=completed;setTimeout(()=>{if(step===current().length){history.push({word:current(),correct:step,errors});wordIndex=(wordIndex+1)%words.length;reset();}},850);}}
+ else{errors++;}
+ render();$('accuracy').textContent=(attempts?Math.round((attempts-errors)/attempts*100):0)+'%';
+});
+$('startBtn').onclick=start;$('resetBtn').onclick=reset;$('nextBtn').onclick=nextWord;
+$('wordChoices').innerHTML=words.map((w,i)=>`<button type="button" data-word="${i}">${w}</button>`).join('');
+$('wordChoices').addEventListener('click',e=>{const b=e.target.closest('button[data-word]');if(!b)return;wordIndex=Number(b.dataset.word);reset();});
+function snapshot(){return {nome:$('firstName').value,cognome:$('lastName').value,data:new Date().toLocaleString('it-IT'),tempo:$('timer').textContent,paroleCompletate:completed,precisione:$('accuracy').textContent,parolaCorrente:current(),lettereDigitate:step,storico:history};}
+$('saveBtn').onclick=()=>{try{localStorage.setItem('maniInTastiera-sessione',JSON.stringify(snapshot()));$('saveStatus').textContent='Sessione salvata su questo dispositivo. 🌟';}catch(e){$('saveStatus').textContent='Non è stato possibile salvare su questo dispositivo.';}};
+$('reportBtn').onclick=()=>{const d=snapshot();const lines=[['Voce','Risultato'],['Nome',d.nome],['Cognome',d.cognome],['Data',d.data],['Tempo',d.tempo],['Parole completate',d.paroleCompletate],['Precisione',d.precisione],['Parola corrente',d.parolaCorrente],['Lettere digitate',d.lettereDigitate],['Storico',d.storico.map(x=>x.word+' ('+x.correct+' lettere, errori: '+x.errors+')').join(' | ')]];const csv=lines.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(';')).join('\n');const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='report-mani-in-tastiera.csv';a.click();URL.revokeObjectURL(a.href);};
+render();updateTimer();
+</script>
+</body>
+</html>
