@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mani in Tastiera — Laboratorio di scrittura</title>
+<style>
+:root{--bg:#f3f6fc;--surface:#fff;--ink:#202b42;--muted:#66738b;--primary:#385fca;--primary-light:#eaf0ff;--accent:#ffd95a;--good:#16845b;--bad:#c74343;--line:#e2e8f2;--shadow:0 12px 32px rgba(34,53,91,.08)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+header{background:linear-gradient(120deg,#263f91,#5278df);color:white;padding:30px 18px;text-align:center}header h1{margin:0;font-size:clamp(1.8rem,4vw,2.6rem)}header p{margin:7px 0 0;color:#e5ebff}
+main{max-width:1120px;margin:24px auto;padding:0 16px 42px}.grid{display:grid;grid-template-columns:minmax(280px,.9fr) minmax(0,1.35fr);gap:18px;align-items:start}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:var(--shadow);margin-bottom:18px}
+h2{font-size:1.12rem;margin:0 0 12px}p.help{color:var(--muted);font-size:.91rem;margin:-4px 0 14px}
+label{display:block;font-size:.86rem;font-weight:700;margin:10px 0 5px}
+textarea,input{width:100%;font:inherit;color:var(--ink);background:#fff;border:1px solid #ccd6e7;border-radius:11px;padding:11px 12px;outline:none}
+textarea:focus,input:focus{border-color:var(--primary);box-shadow:0 0 0 3px #385fca1c}
+textarea{min-height:150px;resize:vertical}
+button,.filebutton{border:0;border-radius:11px;padding:11px 15px;font:700 .92rem system-ui;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:7px}
+button.primary{background:var(--primary);color:white}button.soft{background:var(--primary-light);color:#294cae}button.neutral,.filebutton{background:#eef1f6;color:#34415a}button.green{background:#e6f5ee;color:#176b4b}button.red{background:#fff0f0;color:#b83d3d}button:disabled{opacity:.45;cursor:not-allowed}
+.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:13px}.filebutton{margin:0}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+.metric{background:white;border:1px solid var(--line);border-radius:15px;padding:12px;text-align:center;box-shadow:var(--shadow)}
+.metric strong{display:block;color:var(--primary);font-size:1.5rem;font-variant-numeric:tabular-nums}.metric span{font-size:.72rem;color:var(--muted);font-weight:800;letter-spacing:.06em}
+.playarea{background:linear-gradient(140deg,#f0f4ff,#fbfcff);border:1px solid #dce5ff;border-radius:16px;padding:18px;text-align:center}
+.eyebrow{font-size:.75rem;font-weight:800;letter-spacing:.1em;color:var(--muted)}
+.bigchar{font-size:clamp(4rem,10vw,6.5rem);font-weight:850;line-height:1.15;color:var(--primary);min-height:1.15em}
+.instruction{font-weight:700;color:#53617b;min-height:25px}
+.progress{height:10px;background:#e8edf6;border-radius:20px;overflow:hidden;margin:14px 0}.progress>div{height:100%;width:0;background:linear-gradient(90deg,#5278df,#23a477);transition:width .2s}
+.textview{font-size:1.15rem;line-height:2;overflow-wrap:anywhere;min-height:42px}.textview span{border-radius:4px;padding:2px 1px}.textview .past{color:var(--good)}.textview .now{background:#ffe88d;outline:2px solid var(--accent);color:#554300}.textview .future{color:#59657a}
+.status{min-height:27px;margin-top:9px;font-weight:700;color:var(--muted)}.status.good{color:var(--good)}.status.bad{color:var(--bad)}
+.handrow{display:grid;grid-template-columns:1fr 1fr;gap:10px}.hand{border:1px solid var(--line);background:#fafbfd;border-radius:13px;padding:11px}.hand h3{font-size:.77rem;color:var(--muted);margin:0 0 8px}
+.fingers{display:flex;gap:3px}.finger{flex:1;min-width:0;text-align:center;border-radius:8px;padding:7px 1px;color:#65718a;font-size:.63rem}.finger b{display:block;font-size:1.25rem}.finger.active{background:#fff0a8;color:#554300;outline:2px solid var(--accent);font-weight:800}
+.note{background:#f6f8fc;padding:12px;border-radius:11px;color:var(--muted);font-size:.88rem;margin-top:12px}
+.row{display:flex;gap:10px}.row>div{flex:1;min-width:0}
+.jsonstatus{font-size:.87rem;color:var(--muted);min-height:23px;margin-top:9px}
+footer{text-align:center;color:var(--muted);font-size:.82rem;margin-top:10px}
+@media(max-width:780px){.grid{grid-template-columns:1fr}.cards{grid-template-columns:repeat(2,1fr)}.panel{padding:16px}}
+@media(max-width:390px){.handrow{grid-template-columns:1fr}.row{display:block}}
+</style>
+</head>
+<body>
+<header><h1>⌨️ Mani in Tastiera</h1><p>Un laboratorio semplice per imparare a scrivere, un carattere alla volta</p></header>
+<main>
+<section class="cards" aria-label="Risultati esercizio">
+ <div class="metric"><strong id="time">00:00</strong><span>TEMPO</span></div>
+ <div class="metric"><strong id="done">0 / 0</strong><span>CARATTERI</span></div>
+ <div class="metric"><strong id="accuracy">100%</strong><span>PRECISIONE</span></div>
+ <div class="metric"><strong id="words">0</strong><span>PAROLE COMPLETATE</span></div>
+</section>
+<div class="grid">
+ <div>
+  <section class="panel">
+   <h2>📝 Prepara l'esercizio</h2>
+   <p class="help">Incolla o scrivi qui una frase o un brano. Lo studente lo copierà per intero.</p>
+   <label for="sourceText">Testo da copiare</label>
+   <textarea id="sourceText" placeholder="Scrivi o incolla qui il testo...">La tastiera si impara con pazienza. Guarda il testo, trova il tasto e usa il dito giusto.</textarea>
+   <div class="actions">
+    <button class="primary" id="start">▶ Inizia</button>
+    <button class="soft" id="restart">↻ Ricomincia</button>
+    <button class="neutral" id="clear">Svuota</button>
+   </div>
+  </section>
+  <section class="panel">
+   <h2>💾 Salva e recupera (JSON)</h2>
+   <p class="help">Il file contiene il testo, il nome dello studente e le preferenze. Potrai riutilizzarlo in un'altra lezione o su un altro computer.</p>
+   <div class="row">
+    <div><label for="student">Nome studente</label><input id="student" placeholder="Nome (facoltativo)"></div>
+    <div><label for="level">Livello</label><input id="level" placeholder="Es. classe 3ª"></div>
+   </div>
+   <div class="actions">
+    <button class="primary" id="export">⬇ Esporta JSON</button>
+    <label class="filebutton" for="import">⬆ Importa JSON</label>
+    <input class="hidden" type="file" id="import" accept=".json,application/json" hidden>
+   </div>
+   <div class="actions">
+    <button class="green" id="localSave">Salva su questo dispositivo</button>
+    <button class="neutral" id="localLoad">Recupera salvataggio</button>
+   </div>
+   <div class="jsonstatus" id="jsonStatus" aria-live="polite"></div>
+  </section>
+  <section class="panel">
+   <h2>✋ Mano e dito da usare</h2>
+   <p class="help">Il dito consigliato si illumina in giallo in base al carattere da digitare.</p>
+   <div class="handrow">
+    <div class="hand"><h3>MANO SINISTRA</h3><div class="fingers">
+     <div class="finger" data-finger="lp"><b>☝</b>Mignolo</div><div class="finger" data-finger="lr"><b>☝</b>Anulare</div><div class="finger" data-finger="lm"><b>☝</b>Medio</div><div class="finger" data-finger="li"><b>☝</b>Indice</div><div class="finger" data-finger="lt"><b>👍</b>Pollice</div>
+    </div></div>
+    <div class="hand"><h3>MANO DESTRA</h3><div class="fingers">
+     <div class="finger" data-finger="rt"><b>👍</b>Pollice</div><div class="finger" data-finger="ri"><b>☝</b>Indice</div><div class="finger" data-finger="rm"><b>☝</b>Medio</div><div class="finger" data-finger="rr"><b>☝</b>Anulare</div><div class="finger" data-finger="rp"><b>☝</b>Mignolo</div>
+    </div></div>
+   </div>
+   <div class="note" id="fingerNote">Quando inizi, qui apparirà il dito da utilizzare.</div>
+  </section>
+ </div>
+ <div>
+  <section class="panel">
+   <h2>🎯 Tocca a te!</h2>
+   <div class="playarea">
+    <div class="eyebrow">CARATTERE DA DIGITARE</div>
+    <div class="bigchar" id="target">—</div>
+    <div class="instruction" id="instruction">Premi «Inizia» per cominciare</div>
+   </div>
+   <div class="progress"><div id="bar"></div></div>
+   <div class="textview" id="textView"></div>
+   <label for="typing">Scrivi qui</label>
+   <input id="typing" placeholder="Clicca qui e digita..." autocomplete="off" autocapitalize="off" spellcheck="false" disabled>
+   <div class="status" id="status" aria-live="polite">L'esercizio è pronto quando vuoi.</div>
+   <div class="actions">
+    <button class="soft" id="pause" disabled>⏸ Pausa</button>
+    <button class="neutral" id="skip" disabled>Salta carattere</button>
+    <button class="red" id="stop" disabled>Termina</button>
+   </div>
+  </section>
+  <section class="panel">
+   <h2>🌟 Come si gioca</h2>
+   <ol><li>Leggi il carattere grande evidenziato.</li><li>Osserva la mano e il dito illuminati.</li><li>Digita il carattere nel campo qui sopra.</li><li>Continua fino alla fine del brano.</li></ol>
+   <div class="note" id="result">Non serve correre: conta scrivere con attenzione!</div>
+  </section>
+ </div>
+</div>
+<footer>Mani in Tastiera · I testi inseriti restano nel browser finché non chiudi o ricarichi la pagina. Esporta un JSON per conservarli.</footer>
+</main>
+<script>
+(() => {
+ const el = id => document.getElementById(id);
+ const s = {text:"",pos:0,errors:0,attempts:0,seconds:0,running:false,paused:false,tick:null};
+ const fingerMap = {
+  a:"lp",q:"lp",z:"lp", s:"lr",w:"lr",x:"lr", d:"lm",e:"lm",c:"lm",
+  f:"li",r:"li",v:"li",g:"li",t:"li",b:"li",
+  h:"ri",y:"ri",n:"ri",j:"ri",u:"ri",m:"ri",
+  k:"rm",i:"rm", l:"rr",o:"rr", p:"rp",
+  " ":"lt"
+ };
+ const fingerText={lp:"Mignolo sinistro",lr:"Anulare sinistro",lm:"Medio sinistro",li:"Indice sinistro",lt:"Pollice (barra spaziatrice)",ri:"Indice destro",rm:"Medio destro",rr:"Anulare destro",rp:"Mignolo destro"};
+ function getFinger(ch){
+  if(ch===" ") return "lt";
+  if(/[A-ZÀ-ÖØ-Þ]/.test(ch)) return fingerMap[ch.toLowerCase()]||null;
+  return null;
+ }
+ function formatTime(){el("time").textContent=String(Math.floor(s.seconds/60)).padStart(2,"0")+":"+String(s.seconds%60).padStart(2,"0")}
+ function stopTimer(){if(s.tick){clearInterval(s.tick);s.tick=null}}
+ function startTimer(){stopTimer();s.tick=setInterval(()=>{if(s.running&&!s.paused){s.seconds++;formatTime()}},1000)}
+ function setStatus(msg,kind=""){el("status").textContent=msg;el("status").className="status "+kind}
+ function paint(){
+  const total=s.text.length, pos=s.pos, current=s.text[pos];
+  el("done").textContent=`${pos} / ${total}`;
+  el("accuracy").textContent=s.attempts?Math.round((s.attempts-s.errors)/s.attempts*100)+"%":"100%";
+  el("bar").style.width=(total?pos/total*100:0)+"%";
+  el("target").textContent=pos<total?(current===" "?"␣":current):total?"✓":"—";
+  const finger=pos<total?getFinger(current):null;
+  el("instruction").textContent=pos>=total?(total?"Bravissimo, esercizio completato!":"Nessun testo caricato"):current===" "?"Premi la barra spaziatrice":finger?fingerText[finger]:"Usa il tasto corrispondente";
+  el("fingerNote").textContent=pos>=total?"Hai terminato il testo. Ottimo lavoro!":finger?`Usa: ${fingerText[finger]}.`:"Per questo simbolo o segno, cerca il tasto corrispondente sulla tastiera.";
+  document.querySelectorAll(".finger").forEach(f=>f.classList.toggle("active",!!finger&&f.dataset.finger===finger));
+  el("textView").replaceChildren();
+  [...s.text].forEach((ch,i)=>{const span=document.createElement("span");span.textContent=ch===" "?" ":ch;span.className=i<pos?"past":i===pos?"now":"future";el("textView").append(span)});
+  el("words").textContent=s.text.slice(0,pos).trim().split(/\s+/).filter(Boolean).length;
+  el("pause").disabled=!s.running||pos>=total;el("skip").disabled=!s.running||s.paused||pos>=total;el("stop").disabled=!s.running;
+  el("typing").disabled=!s.running||s.paused||pos>=total;
+  el("pause").textContent=s.paused?"▶ Riprendi":"⏸ Pausa";
+ }
+ function finish(){
+  s.running=false;s.paused=false;stopTimer();paint();
+  setStatus("🎉 Hai completato tutto il testo!","good");
+  el("result").textContent=`Complimenti${el("student").value.trim()?" "+el("student").value.trim():""}! Hai completato ${s.text.length} caratteri in ${el("time").textContent}, con ${s.errors} errori.`;
+  el("typing").blur();
+ }
+ function begin(){
+  const text=el("sourceText").value;
+  if(!text){setStatus("Prima inserisci un testo da copiare.","bad");return}
+  s.text=text;s.pos=0;s.errors=0;s.attempts=0;s.seconds=0;s.running=true;s.paused=false;
+  formatTime();el("typing").value="";el("result").textContent="Esercizio in corso: procedi con calma.";
+  setStatus("Pronto! Digita il carattere evidenziato.","good");paint();startTimer();el("typing").focus();
+ }
+ el("start").addEventListener("click",begin);
+ el("restart").addEventListener("click",()=>{if(s.text){el("sourceText").value=s.text;begin()}else begin()});
+ el("clear").addEventListener("click",()=>{el("sourceText").value="";setStatus("Testo cancellato.")});
+ el("typing").addEventListener("input",()=>{
+  if(!s.running||s.paused)return;
+  const typed=el("typing").value;
+  if(!typed)return;
+  const expected=s.text[s.pos];
+  // Gestisce anche l'incolla accidentale: viene valutato un carattere per volta.
+  for(const ch of typed){
+   if(s.pos>=s.text.length)break;
+   s.attempts++;
+   if(ch===s.text[s.pos])s.pos++;else{s.errors++;setStatus(`Non è corretto: riprova «${s.text[s.pos]===" "?"spazio":s.text[s.pos]}».`,"bad")}
+  }
+  el("typing").value="";
+  if(s.pos>=s.text.length)finish();else{if(s.attempts===s.pos+s.errors)setStatus("Bene! Continua così.","good");paint()}
+ });
+ el("pause").addEventListener("click",()=>{
+  if(!s.running)return;s.paused=!s.paused;
+  if(s.paused){setStatus("Esercizio in pausa.");stopTimer()}else{setStatus("Esercizio ripreso.","good");startTimer();el("typing").focus()}
+  paint();
+ });
+ el("skip").addEventListener("click",()=>{if(s.running&&!s.paused&&s.pos<s.text.length){s.pos++;setStatus("Carattere saltato.");if(s.pos>=s.text.length)finish();else paint()}});
+ el("stop").addEventListener("click",()=>{s.running=false;s.paused=false;stopTimer();paint();setStatus("Esercizio terminato.");el("result").textContent="Esercizio interrotto. Puoi ricominciare quando vuoi."});
+ function settings(){return {app:"Mani in Tastiera",version:1,savedAt:new Date().toISOString(),student:el("student").value,level:el("level").value,text:el("sourceText").value}}
+ function apply(data){
+  if(!data||typeof data!=="object"||typeof data.text!=="string")throw new Error("Il file non contiene un testo valido.");
+  el("sourceText").value=data.text;el("student").value=typeof data.student==="string"?data.student:"";el("level").value=typeof data.level==="string"?data.level:"";
+  s.text="";s.pos=0;s.running=false;s.paused=false;stopTimer();s.seconds=0;s.errors=0;s.attempts=0;formatTime();paint();setStatus("Impostazioni importate. Premi Inizia per avviare.","good");
+ }
+ el("export").addEventListener("click",()=>{
+  const blob=new Blob([JSON.stringify(settings(),null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;
+  const base=(el("student").value.trim()||"esercizio").toLowerCase().replace(/[^a-z0-9à-ÿ_-]+/gi,"-");
+  a.download=`mani-in-tastiera-${base}.json`;document.body.append(a);a.click();a.remove();URL.revokeObjectURL(url);
+  el("jsonStatus").textContent="File JSON creato e scaricato.";
+ });
+ el("import").addEventListener("change",async ev=>{
+  const file=ev.target.files[0];if(!file)return;
+  try{apply(JSON.parse(await file.text()));el("jsonStatus").textContent=`Importato: ${file.name}`;}
+  catch(err){el("jsonStatus").textContent="Impossibile importare il file: "+err.message;}
+  ev.target.value="";
+ });
+ el("localSave").addEventListener("click",()=>{try{localStorage.setItem("maniTastieraSettings",JSON.stringify(settings()));el("jsonStatus").textContent="Impostazioni salvate su questo dispositivo."}catch(e){el("jsonStatus").textContent="Salvataggio non riuscito nel browser."}});
+ el("localLoad").addEventListener("click",()=>{try{const raw=localStorage.getItem("maniTastieraSettings");if(!raw){el("jsonStatus").textContent="Non è presente un salvataggio su questo dispositivo.";return}apply(JSON.parse(raw));el("jsonStatus").textContent="Salvataggio locale recuperato."}catch(e){el("jsonStatus").textContent="Salvataggio non valido."}});
+ paint();formatTime();
+})();
+</script>
+</body>
+</html>
